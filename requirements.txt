@@ -44,4 +44,6 @@ httpx==0.25.1
 
 # Message Queue
 kafka-python==2.0.2
-react==4.3.0
+react==4.3.0flask==3.0.0
+pyyaml==6.0.1
+requests==2.31.0
