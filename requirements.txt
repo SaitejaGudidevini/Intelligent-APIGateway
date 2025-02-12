@@ -1,0 +1,47 @@
+fastapi
+uvicorn
+pydantic
+authlib
+sqlalchemy
+alembic
+psycopg2-binary
+pymongo
+kafka-python
+boto3
+requests
+pytest
+httpx
+celery
+redis
+prometheus_client
+elasticsearch
+loguru # Core FastAPI dependencies
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic==2.4.2
+
+# Authentication & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.23
+alembic==1.12.1
+psycopg2-binary==2.9.9
+
+# AWS Integration
+boto3==1.29.3
+
+# Monitoring & Logging
+prometheus-client==0.19.0
+elasticsearch==8.11.0
+loguru==0.7.2
+
+# Testing
+pytest==7.4.3
+httpx==0.25.1
+
+# Message Queue
+kafka-python==2.0.2
+react==4.3.0
