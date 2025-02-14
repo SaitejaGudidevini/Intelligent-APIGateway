@@ -1,0 +1,48 @@
+
+# 2025-02-14 15:13:09.776804
++n
+
+# 2025-02-14 15:13:14.112156
++/ls
+
+# 2025-02-14 15:13:24.657131
++/add main.py
+
+# 2025-02-14 15:13:34.736807
++/ask can you fix my main.py
+
+# 2025-02-14 15:14:54.128529
++y
+
+# 2025-02-14 15:15:23.688348
++can you fix everything
+
+# 2025-02-14 15:16:02.602332
++y
+
+# 2025-02-14 15:16:22.766219
++/run export SECRET_KEY="your-secure-secret-key-here"
+
+# 2025-02-14 15:16:22.766672
++/run export SECRET_KEY="your-secure-secret-key-here"
+
+# 2025-02-14 15:16:24.151957
++/run pip install pydantic-settings
+
+# 2025-02-14 15:16:24.152043
++/run pip install pydantic-settings
+
+# 2025-02-14 15:16:36.213167
++y
+
+# 2025-02-14 15:16:38.260502
++/run uvicorn main:app --reload
+
+# 2025-02-14 15:16:38.260763
++/run uvicorn main:app --reload
+
+# 2025-02-14 15:24:08.441371
++n
+
+# 2025-02-14 15:24:11.855439
++/ls
