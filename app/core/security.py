@@ -3,9 +3,10 @@ from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
+import os
 
 # Security constants
-SECRET_KEY = "your-secret-key-here"  # Change this in production!
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here")  # Get from environment variable
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
