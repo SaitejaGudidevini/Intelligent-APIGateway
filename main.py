@@ -4,9 +4,15 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, AP
 from loguru import logger
 import time
 from sqlalchemy.orm import Session
-from app.core.security import create_access_token, Token, verify_password, ACCESS_TOKEN_EXPIRE_MINUTES
+from app.core.security import (
+    create_access_token, Token, verify_password, 
+    ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY
+)
 from app.core.database import SessionLocal
-from app.core.auth import authenticate_user, get_user_by_email, create_new_user
+from app.core.auth import (
+    authenticate_user, get_user_by_email,
+    create_new_user, get_user_by_username
+)
 from app.models.user import User
 from app.schemas.user import UserCreate, User as UserSchema
 from datetime import timedelta
