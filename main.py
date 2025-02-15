@@ -109,17 +109,23 @@ async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
 ):
+    logger.debug(f"Login attempt for username: {form_data.username}")
+    
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
+        logger.warning(f"Failed login attempt for username: {form_data.username}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    
+    logger.debug(f"User authenticated successfully: {user.username}")
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
+    logger.debug(f"Access token created, length: {len(access_token)}")
     return {"access_token": access_token, "token_type": "bearer"}
 
 @app.post("/users/", response_model=UserSchema, tags=["authentication"])
@@ -143,21 +149,38 @@ async def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     
+    logger.debug("Starting token validation...")
+    logger.debug(f"Received token header: {token[:10]}..." if token else "No token")
+    
     if not token:
-        logger.error("No token provided")
+        logger.error("No token provided in request")
         raise credentials_exception
         
     try:
         from jose import jwt
-        logger.debug(f"Attempting to decode token: {token[:10]}...")
+        logger.debug(f"Attempting to decode token with SECRET_KEY length: {len(SECRET_KEY)}")
         payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        logger.debug(f"Token payload decoded: {payload}")
+        
         username: str = payload.get("sub")
         if username is None:
-            logger.error("No username found in token payload")
+            logger.error("No 'sub' claim found in token payload")
             raise credentials_exception
-        logger.debug(f"Token decoded successfully for user: {username}")
+        logger.debug(f"Username extracted from token: {username}")
+        
+        user = get_user_by_username(db, username=username)
+        if user is None:
+            logger.error(f"No user found in database for username: {username}")
+            raise credentials_exception
+            
+        logger.debug(f"User successfully validated: {username}")
+        return user
+        
+    except jwt.JWTError as e:
+        logger.error(f"JWT validation failed: {str(e)}")
+        raise credentials_exception
     except Exception as e:
-        logger.error(f"Token validation failed: {str(e)}")
+        logger.error(f"Unexpected error during token validation: {str(e)}")
         raise credentials_exception
         
     user = get_user_by_username(db, username=username)
