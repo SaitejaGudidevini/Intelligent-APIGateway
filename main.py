@@ -144,15 +144,20 @@ async def get_current_user(
     )
     
     if not token:
+        logger.error("No token provided")
         raise credentials_exception
         
     try:
         from jose import jwt
+        logger.debug(f"Attempting to decode token: {token[:10]}...")
         payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
         username: str = payload.get("sub")
         if username is None:
+            logger.error("No username found in token payload")
             raise credentials_exception
-    except Exception:
+        logger.debug(f"Token decoded successfully for user: {username}")
+    except Exception as e:
+        logger.error(f"Token validation failed: {str(e)}")
         raise credentials_exception
         
     user = get_user_by_username(db, username=username)
